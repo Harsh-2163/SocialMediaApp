@@ -1,0 +1,27 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="search_result">
+        <a style="text-decoration:none;display: flex;justify-content: center;align-items: center;font-size: 18px;margin-top: 50px;" 
+            href="/home" type="button" class="upload_btn">&lt;= Back To Home</a> 
+    
+    <div class="search_result_list">
+        {% for tempUser in user_profile_list %}
+        <div class="search_result_item">
+            <div class="search_item_image">
+                <img src="{{tempUser.profileimg.url}}">
+            </div>
+            <div class="search_info">
+                <a href="/getProfile/{{tempUser.user.email}}" style="cursor:pointer;color:#385185;font-size: 26px;text-decoration: none;text-align: center;">{{tempUser.user.email}}</a>
+                <h3>Location  : {{tempUser.location}}</h3>
+                <h3>About     : {{tempUser.bio}}</h3>
+                <h3>Joined on : {{tempUser.date_joined}}</h3>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock content %}

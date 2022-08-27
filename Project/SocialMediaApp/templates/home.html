@@ -1,0 +1,122 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="homepage">
+        <div class="home-header">
+            <div class="logo">
+                <img class='header-logo' src="{% static 'images/flat-logo.png' %}">
+            </div>
+            <form action="search" method="POST" class="searchbar">
+                {% csrf_token %}
+                <input type="text" placeholder="Search" name="search-email">
+                <button type="submit"><img src="{% static 'images/search-icon.png' %}" ></button>
+            </form>
+            <div class="navigations">
+                <button type="button" class="upload_btn">Upload Pics</button> 
+                 <!-- upload dropdown box -->
+                <form action="upload" method="POST" enctype="multipart/form-data" uk-dropdown="pos: top-right;mode:hover ; animation: uk-animation-slide-bottom-small" class="header_dropdown">
+                    {% csrf_token %}
+                    <p class="my-3 leading-6">Upload Pics</p>
+                    <div>
+                        <input type="file" name="image_upload">
+                        <textarea class="button soft-warning small " name="caption" placeholder="Caption here..." ></textarea>
+                        <br>
+                    </div>
+                    <!-- notification contents -->
+                    <div class="flex justify-center flex-center text-center">
+
+                        <div class="flex flex-col choose-upload text-center">
+                           
+                            <div uk-form-custom>
+                                <button type="submit" class="button soft-warning small"> Submit </button>
+                            </div>
+                        </div>
+
+                        
+                    </div>
+                </form>
+                
+                
+                <div class="individual-nav"><a href='/home'> <img src="{% static 'images/home-icon.png' %}"></a></div>
+                <p>
+                    {% if user_profile != None %}
+                    <img width='40' src="{{user_profile.profileimg.url}}" class="header-img" alt="">
+                    {% else %}
+                    <img width='40' src="{% static 'images/home-icon.png' %}" class="header-img" alt="">
+                    {% endif %}
+                </p>
+                <div uk-drop="mode: hover;offset:9" class="header_dropdown profile_dropdown border-t">
+                    <ul>
+                        <li><a href="myProfile">My Profile</a></li>
+                        <li><a href="settings"> Account setting </a> </li>
+                        <li><a href="Logout"> Log Out</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="center-content">
+            <div class="center-left">
+                {% if feedLen == 0 %}
+                    <div class="no-post-sec">
+                        Follow people, to start your social journey here.
+                    </div>
+                {% endif %}
+                {% for post in feed %}
+                <div class="post">
+                    <div class="person">
+                        <div class="person-logo">
+                            <img src="{{post.user.prof_obj.profileimg.url}}">
+                        </div>
+                        <a href="getProfile/{{post.user.email}}" class="person-name">{{post.user.prof_obj.userName}}</a>
+                    </div>
+                    <div class="post-content">
+                        <a href="{{post.image.url}}" target="_blank">
+                        <img src="{{post.image.url}}">
+                        </a>
+                        <p class="post-caption">{{post.caption}}</p>
+
+                        <p class="post-caption" style="font-weight:bold;">Liked by {{post.no_of_likes}} persons.</p>
+                    </div>
+                    <div class="post-additionals">
+                        <a href="/like_post?post_id={{post.id}}" class="likediv" id="likebtn" onclick="document.getElementById('likebtn').classList.toggle('likediv-active')">
+                        </a>
+                        <div class="comment">
+                            <img src="{% static 'images/comment-icon.png' %}">
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            <div class="center-right">
+                <div class="right-header">
+                    <h3>Suggestions for you</h3>
+                    <h4>See all</h4>
+                </div>
+                <div class="person-list">
+                    {% for user in suggested_users %}
+                    <div class="person-short">
+                        <div class="person-logo">
+                            <img src="{{user.prof_obj.profileimg.url}}">
+                        </div>
+                        <div class="person-short-info">
+                            <div class="person-short-name">
+                                <a href="getProfile/{{user.email}}">{{user.prof_obj.userName}}</a>
+                            </div>
+                            <div class="person-short-head">{{user.prof_obj.location}}</div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <link rel="stylesheet" href="{% static 'assets/css/uikit.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/tailwind.css' %}">
+    <script src="{% static 'assets/js/tippy.all.min.js' %}"></script>  
+    <script src="{% static 'assets/js/jquery-3.3.1.min.js' %}"></script>
+    <script src="{% static 'assets/js/uikit.js' %}"></script>
+    <script src="{% static 'assets/js/simplebar.js' %}"></script>
+    <script src="{% static 'assets/js/custom.js' %}"></script>
+{% endblock content %}

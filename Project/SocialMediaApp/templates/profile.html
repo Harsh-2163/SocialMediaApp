@@ -1,0 +1,58 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block content %}
+
+<!--<div class="se-pre-con"></div>-->
+<div class="profile-page">
+    <div class="navigations">
+        <a style="text-decoration:none;display: flex;justify-content: center;align-items: center;font-size: 18px;" 
+            href="/home" type="button" class="upload_btn">&lt;= Back To Home</a> 
+    </div>
+    <div class="profile-head">
+        <img class='coverimg' src="{{userProfile.coverimg.url}}" alt=""></figure>
+        <div class="profile-top">
+            <div class="top-img">
+                <img src="{{userProfile.profileimg.url}}" style="height: 250px; width: 100%;" alt="">
+            </div>
+            <form action="/follow" method='POST' class="profile-head-btns">
+                {% csrf_token %}
+                <div class="top-head-div1">
+                    <span><b>{{userObj.prof_obj.userName}}</b></span>
+                    <span> <b> {{userObj.email}} </b></span>
+                </div>
+                <div class="top-head-div2">
+                    <span ><b>{{userPostsLength}} Post</b></span>
+                    <span ><b>{{no_of_followers}} followers</b></span>
+                    <span ><b>{{no_of_following}} following</b></span>
+                </div>
+                <div class="top-head-div4">
+                    <span><b>{{userProfile.bio}}</b></span>
+                </div>
+                <input type="hidden" value="{{userObj.email}}" name="being_followed">
+                <input type="hidden" value="{{user.email}}" name="is_following">
+                {% if user.email == userObj.email %}
+                    <a href="/settings" class="upload_btn" style="font-size:22px;text-decoration:none;text-align:center;letter-spacing:0.20rem;cursor: pointer;">Account Settings</a>
+                {% else %}
+                    <button type="submit" class="upload_btn" style="font-size:22px;text-decoration:none;text-align:center;letter-spacing:0.20rem;cursor: pointer;">{{button_text}}</button>
+                {% endif %}
+            </form>
+        </div>
+        <div class="profile-center">
+            <h3 style="font-size:25px;letter-spacing:0.1rem;color:slateblue">Posts by {{userObj.prof_obj.userName}}</h3>
+            <hr style="width:20%;border:1px solid lightgray;">
+            <div class="posts-section">
+                {% for post in userPosts %}
+                <div class="profile-post">
+                    <img src="{{post.image.url}}">
+                    <h3>{{post.caption}}</h3>
+                    <h3>Created at  :  {{post.created_at}}</h3>
+                    <h3>{{post.no_of_likes}} Likes</h3>
+                </div>
+                {% endfor %}
+                
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

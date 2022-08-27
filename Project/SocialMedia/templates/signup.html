@@ -1,0 +1,32 @@
+
+{% extends 'index.html' %}
+{% load static %}
+{% block content %}
+    
+    <form action="" method="post" class="tab-1">
+        {% csrf_token  %}
+        <div class="social-signup">
+            <button class="login-google-div"><img src="{% static 'images/google-logo.png' %}" alt="cant load"><p>Log in with Google</p></button> 
+        </div>
+        <img src="{% static 'images/logo.png' %}" alt="cant load logo">
+        <input type="email" class="login-email" name="email" placeholder="Enter Email-id here">
+        <input type="text" class="login-password" name="name" placeholder="Enter Name here">
+        <input type="password" class="login-password" name="password" placeholder="Enter password here">
+        <input type="password" class="login-password" name="password1" placeholder="Enter password again">
+        
+        <button type="submit">Sign up</button>
+        <div class="error-div">
+            <h3>{{error}}</h3>
+        </div>
+        <p style="align-text:center!important;">By signing up, you agree to our Terms</p><p style="margin-top:0px!important;"> Policy and Cookies Policy .</p>
+        <div class="or-show">
+            <div class="half-line"></div>
+            <div class="or-text">OR</div>
+            <div class="half-line"></div>
+        </div>
+        <div class="social-signup">
+            <p>Have an account? <a href="/">Log in</a></p>
+        </div>
+    </form>
+    
+{% endblock content %}

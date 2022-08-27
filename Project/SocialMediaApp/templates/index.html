@@ -1,0 +1,38 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Social Media</title>
+        <link rel = "icon" href ="{% static 'images/title-logo.png' %}" type = "image/x-icon">
+        <link rel="stylesheet" href="{% static 'css/index.css' %}" >
+    </head>
+    <body>
+        <div class="main">
+            {% block content %}
+            <form action="signin" method="post" class="tab-1">
+                {% csrf_token %}
+                <img src="{% static 'images/logo.png' %}" alt="cant load logo">
+                <input type="email" class="login-email" name="email" placeholder="Enter Email-id here">
+                <input type="password" class="login-password" name="password" placeholder="Enter password here">
+                <button type="submit">Log in</button>
+                <div class="or-show">
+                    <div class="half-line"></div>
+                    <div class="or-text">OR</div>
+                    <div class="half-line"></div>
+                </div>
+                <div class="social-signup">
+                    <div><img src="{% static 'images/google-logo.png' %}" alt="cant load"><p>Log in with Google</p></div>
+                    <div class="error-div">
+                        <h3>{{error}}</h3>
+                    </div>
+                    <h3 class="forgot-pass">Forgot password ? </h3>
+                </div>
+            </form>
+            <div class="tab-2">
+                <p>Don't have an account ? <a href="/signup">Sign up</a></p>
+            </div>
+            {% endblock content %}
+        </div>
+        
+    </body>
+</html>

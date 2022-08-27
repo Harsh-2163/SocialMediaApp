@@ -1,0 +1,147 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="profile-page">
+    <div class="navigations">
+        <a style="text-decoration:none;display: flex;justify-content: center;align-items: center;font-size: 18px;" 
+            href="/home" type="button" class="upload_btn">&lt;= Back To Home</a> 
+    </div>
+    <div class="profile-head">
+        <img class='coverimg' src="{{myProfileObj.coverimg.url}}" alt=""></figure>
+        <div class="profile-top">
+            <div class="top-img">
+                <img src="{{myProfileObj.profileimg.url}}" style="height: 250px; width: 100%;" alt="">
+            </div>
+            <div class="profile-head-btns">
+                <div class="top-head-div1">
+                    <span><b>{{userObj.prof_obj.userName}}</b></span>
+                    <span> <b> {{userObj.email}} </b></span>
+                    <span><b>{{myProfileObj.location}}</b></span><br>
+                    <span><b>{{myProfileObj.bio}}</b></span><br>
+                    <span><b>Created at : {{myProfileObj.date_joined}}</b></span>
+                </div>
+                <div class="top-head-div2">
+                    <span ><b>{{myPostsLen}} Post</b></span>
+                    <span ><b>{{noOfFollowers}} followers</b></span>
+                    <span ><b>{{noOfFollowing}} following</b></span>
+                </div>
+                
+            </div>
+        </div>
+        <div class="profile-center">
+            <div class="tabs">
+                <h3 id='post-btn' class='showPost-btn active-btn'
+                    onclick="showPosts()">My Posts</h3>
+                <h3 id='follower-btn'
+                    class='showPost-btn'
+                    onclick="showFollowers()">My Followers</h3>
+                <h3 id='following-btn'
+                    class='showPost-btn'    
+                    onclick="showFollowings()">My Following</h3>
+            
+            </div>
+            <hr style="width:50%;border:1px solid lightgray;">
+            <div id='posts-section' class="active">
+                {% if myPostsLen == 0 %}
+                    <div class="navigations">
+                        <h2 style="text-align:center;width:100%;">No Posts</h2>
+                    </div>
+                {% endif %}
+
+                {% for post in myPosts %}
+                
+                <form action="delete" method="POST" class="profile-post">
+                    {% csrf_token %}
+                    <img src="{{post.image.url}}">
+                    <h3>{{post.caption}}</h3>
+                    <h3>Created at  :  {{post.created_at}}</h3>
+                    <h3>{{post.no_of_likes}} Likes</h3>
+                    <input type="hidden" name="post-id" value="{{post.id}}">
+                    <button type="submit" class="upload_btn" style="margin-bottom:10px;cursor:pointer;font-size:20px;letter-spacing: 0.1rem;">Delete</button>
+                </form>
+                {% endfor %}
+            </div>
+            <div class="hide-class" id='followers-section'>
+                {% for follower in myFollowers %}
+                <div class="person-short-new">
+                    <div class="person-new-logo">
+                        <img src="{{follower.followed_by.prof_obj.profileimg.url}}">
+                    </div>
+                    <div class="person-short-new-info">
+                        <div class="person-short-new-name">
+                            <a href="getProfile/{{follower.followed_by.email}}">{{follower.followed_by.email}}</a>
+                        </div>
+                        <div class="person-short-new-head">{{follower.followed_by.prof_obj.location}}</div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            <div class="hide-class" id='followings-section'>
+                {% for following in myFollowing %}
+                <div class="person-short-new">
+                    <div class="person-new-logo">
+                        <img src="{{following.following_to.prof_obj.profileimg.url}}">
+                    </div>
+                    <div class="person-short-new-info">
+                        <div class="person-short-new-name">
+                            <a href="getProfile/{{following.following_to.email}}">{{following.following_to.email}}</a>
+                        </div>
+                        <div class="person-short-new-head">{{following.following_to.prof_obj.location}}</div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            
+        </div>
+    </div>
+</div>
+<script>
+    function showPosts(){
+
+        document.getElementById('post-btn').classList.add('active-btn')
+        document.getElementById('follower-btn').classList.remove('active-btn')
+        document.getElementById('following-btn').classList.remove('active-btn')
+
+        document.getElementById('posts-section').classList.remove('hide-class');
+        document.getElementById('posts-section').classList.add('active');
+        
+        document.getElementById('followers-section').classList.remove('active');
+        document.getElementById('followers-section').classList.add('hide-class');
+        
+        document.getElementById('followings-section').classList.remove('active');
+        document.getElementById('followings-section').classList.add('hide-class');
+    }
+    function showFollowers(){
+        
+        document.getElementById('post-btn').classList.remove('active-btn')
+        document.getElementById('follower-btn').classList.add('active-btn')
+        document.getElementById('following-btn').classList.remove('active-btn')
+
+        document.getElementById('posts-section').classList.remove('active');
+        document.getElementById('posts-section').classList.add('hide-class');
+        
+        document.getElementById('followers-section').classList.remove('hide-class');
+        document.getElementById('followers-section').classList.add('active');
+        
+        document.getElementById('followings-section').classList.remove('active');
+        document.getElementById('followings-section').classList.add('hide-class');
+    }
+    function showFollowings(){
+     
+        document.getElementById('post-btn').classList.remove('active-btn')
+        document.getElementById('follower-btn').classList.remove('active-btn')
+        document.getElementById('following-btn').classList.add('active-btn')
+
+        document.getElementById('posts-section').classList.remove('active');
+        document.getElementById('posts-section').classList.add('hide-class');
+        
+        document.getElementById('followers-section').classList.remove('active');
+        document.getElementById('followers-section').classList.add('hide-class');
+        
+        document.getElementById('followings-section').classList.remove('hide-class');
+        document.getElementById('followings-section').classList.add('active');
+    }
+</script>
+{% endblock %}

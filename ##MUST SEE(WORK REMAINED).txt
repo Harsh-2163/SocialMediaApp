@@ -1,0 +1,15 @@
+compulsory additions:
+
+1>image sizing for every profile.
+2>comment section
+3>suggestions of followers too.
+4>like button design.
+5>google and facebook signin
+6>forget password
+
+extra additions:
+
+1>more details
+2>video / pdf upload
+3>stories
+4>global 
